@@ -25,7 +25,7 @@ func usage(args []string, errStream io.Writer) {
 	fmt.Fprintf(errStream, "usage: %s LogHash\n", args[0])
 }
 
-func getRepoUrl(r *git.Repository) (string, error) {
+func getRepoURL(r *git.Repository) (string, error) {
 	list, err := r.Remotes()
 	if err != nil {
 		return "", err
@@ -97,7 +97,7 @@ func run(args []string, outStream, errStream io.Writer) int {
 		return msg(err, errStream)
 	}
 
-	url, err := getRepoUrl(r)
+	url, err := getRepoURL(r)
 	if err != nil {
 		return msg(err, errStream)
 	}
