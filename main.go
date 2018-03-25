@@ -26,7 +26,7 @@ func usage(args []string, errStream io.Writer) {
 }
 
 func getFullHash(hash string) string {
-	// TODO: If go-git will support rev-parse, use it.
+	// TODO: If `go-git` will support rev-parse, use it.
 	out, err := exec.Command("git", "rev-parse", hash).Output()
 	if err != nil {
 		return hash

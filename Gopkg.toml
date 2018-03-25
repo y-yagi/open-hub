@@ -1,3 +1,5 @@
+required = ["github.com/golang/lint/golint"]
+
 [[constraint]]
   name = "gopkg.in/src-d/go-git.v4"
   version = "4.2.0"
