@@ -25,6 +25,16 @@ func usage(args []string, errStream io.Writer) {
 	fmt.Fprintf(errStream, "usage: %s LogHash\n", args[0])
 }
 
+func getFullHash(hash string) string {
+	// TODO: If go-git will support rev-parse, use it.
+	out, err := exec.Command("git", "rev-parse", hash).Output()
+	if err != nil {
+		return hash
+	}
+
+	return strings.TrimSpace(string(out))
+}
+
 func getRepoURL(r *git.Repository) (string, error) {
 	list, err := r.Remotes()
 	if err != nil {
@@ -86,6 +96,7 @@ func run(args []string, outStream, errStream io.Writer) int {
 	}
 
 	hash := args[1]
+	hash = getFullHash(hash)
 
 	wd, err := os.Getwd()
 	if err != nil {
