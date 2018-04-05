@@ -25,6 +25,21 @@ func usage(args []string, errStream io.Writer) {
 	fmt.Fprintf(errStream, "usage: %s LogHash\n", args[0])
 }
 
+func chToRootDir() error {
+	// TODO: If go-git will support rev-parse, use it.
+	out, err := exec.Command("git", "rev-parse", "--show-toplevel").Output()
+	if err != nil {
+		return err
+	}
+
+	err = os.Chdir(strings.TrimSpace(string(out)))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func getFullHash(hash string) string {
 	// TODO: If `go-git` will support rev-parse, use it.
 	out, err := exec.Command("git", "rev-parse", hash).Output()
@@ -95,14 +110,15 @@ func run(args []string, outStream, errStream io.Writer) int {
 		os.Exit(1)
 	}
 
-	hash := args[1]
-	hash = getFullHash(hash)
-
-	wd, err := os.Getwd()
+	err := chToRootDir()
 	if err != nil {
 		return msg(err, errStream)
 	}
 
+	hash := args[1]
+	hash = getFullHash(hash)
+
+	wd, err := os.Getwd()
 	r, err := git.PlainOpen(wd)
 	if err != nil {
 		return msg(err, errStream)
