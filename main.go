@@ -82,7 +82,7 @@ func retrivePath(r *git.Repository, hash string) (string, error) {
 		return "", err
 	}
 
-	re := regexp.MustCompile(`Merge pull request #(\d+)`)
+	re := regexp.MustCompile(`#(\d+)`)
 	match := re.FindStringSubmatch(commit.Message)
 	if match == nil {
 		return "/commit/" + hash, nil
