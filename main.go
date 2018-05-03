@@ -64,7 +64,7 @@ func getRepoURL(r *git.Repository) (string, error) {
 	}
 
 	url := remote.Config().URLs[0]
-	url = strings.TrimRight(url, ".git")
+	url = strings.Replace(url, ".git", "", -1)
 	if strings.HasPrefix(url, "https://") {
 		return url, nil
 	}
