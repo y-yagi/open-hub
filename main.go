@@ -9,6 +9,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/y-yagi/dlogger"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing"
 )
@@ -110,6 +111,8 @@ func run(args []string, outStream, errStream io.Writer) int {
 		os.Exit(1)
 	}
 
+	dl := dlogger.New(os.Stdout)
+
 	err := chToRootDir()
 	if err != nil {
 		return msg(err, errStream)
@@ -134,6 +137,7 @@ func run(args []string, outStream, errStream io.Writer) int {
 		return msg(err, errStream)
 	}
 
+	dl.Printf("[Debug] Path: %s\n", path)
 	url = url + path
 	if err = exec.Command(openCommand(), url).Run(); err != nil {
 		return msg(err, errStream)

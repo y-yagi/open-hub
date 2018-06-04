@@ -68,6 +68,12 @@
   revision = "ba9c9e33906f58169366275e3450db66139a31a9"
 
 [[projects]]
+  name = "github.com/y-yagi/dlogger"
+  packages = ["."]
+  revision = "d6859c3c4fcf05a3052e8e51e3e73c064220090a"
+  version = "v0.1.0"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = [
@@ -199,6 +205,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "242408022b67cf125ca77b1b41e0e39ceb5d1b41fca3064aaec54c1f3cbae702"
+  inputs-digest = "41ae37ab1a2f87f3e9d8bc2a6117f2d836fc77d7ca64505afae6c4231d6136b3"
   solver-name = "gps-cdcl"
   solver-version = 1
