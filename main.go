@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -76,10 +77,14 @@ func getRepoURL(r *git.Repository) (string, error) {
 	return url, nil
 }
 
-func retrivePath(r *git.Repository, hash string) (string, error) {
+func retrivePath(r *git.Repository, hash string, pr bool) (string, error) {
 	commit, err := r.CommitObject(plumbing.NewHash(hash))
 	if err != nil {
 		return "", err
+	}
+
+	if !pr {
+		return "/commit/" + hash, nil
 	}
 
 	re := regexp.MustCompile(`#(\d+)`)
@@ -105,7 +110,14 @@ func openCommand() string {
 }
 
 func run(args []string, outStream, errStream io.Writer) int {
-	if len(args) < 2 {
+	var pr bool
+
+	flags := flag.NewFlagSet(args[0], flag.ExitOnError)
+	flags.SetOutput(errStream)
+	flags.BoolVar(&pr, "p", false, "open Pull Request")
+	flags.Parse(args[1:])
+
+	if len(flags.Args()) == 0 {
 		usage(args, errStream)
 		os.Exit(1)
 	}
@@ -115,7 +127,7 @@ func run(args []string, outStream, errStream io.Writer) int {
 		return msg(err, errStream)
 	}
 
-	hash := args[1]
+	hash := flags.Args()[0]
 	hash = getFullHash(hash)
 
 	wd, err := os.Getwd()
@@ -129,7 +141,7 @@ func run(args []string, outStream, errStream io.Writer) int {
 		return msg(err, errStream)
 	}
 
-	path, err := retrivePath(r, hash)
+	path, err := retrivePath(r, hash, pr)
 	if err != nil {
 		return msg(err, errStream)
 	}
