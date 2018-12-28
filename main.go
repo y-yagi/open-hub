@@ -77,13 +77,13 @@ func getRepoURL(r *git.Repository) (string, error) {
 	return url, nil
 }
 
-func retrivePath(r *git.Repository, hash string, pr bool) (string, error) {
+func retrivePath(r *git.Repository, hash string, commitFlg bool) (string, error) {
 	commit, err := r.CommitObject(plumbing.NewHash(hash))
 	if err != nil {
 		return "", err
 	}
 
-	if !pr {
+	if commitFlg {
 		return "/commit/" + hash, nil
 	}
 
@@ -110,11 +110,11 @@ func openCommand() string {
 }
 
 func run(args []string, outStream, errStream io.Writer) int {
-	var pr bool
+	var commit bool
 
 	flags := flag.NewFlagSet(args[0], flag.ExitOnError)
 	flags.SetOutput(errStream)
-	flags.BoolVar(&pr, "p", false, "open Pull Request")
+	flags.BoolVar(&commit, "c", false, "open commit")
 	flags.Parse(args[1:])
 
 	if len(flags.Args()) == 0 {
@@ -141,7 +141,7 @@ func run(args []string, outStream, errStream io.Writer) int {
 		return msg(err, errStream)
 	}
 
-	path, err := retrivePath(r, hash, pr)
+	path, err := retrivePath(r, hash, commit)
 	if err != nil {
 		return msg(err, errStream)
 	}
