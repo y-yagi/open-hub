@@ -101,7 +101,7 @@ func openCommand() string {
 	os := runtime.GOOS
 
 	if os == "linux" {
-		command = "gnome-open"
+		command = "xdg-open"
 	} else if os == "darwin" {
 		command = "open"
 	}
