@@ -1,6 +1,6 @@
 module github.com/y-yagi/open-hub
 
-go 1.19
+go 1.23
 
 require gopkg.in/src-d/go-git.v4 v4.2.0
 
