@@ -109,6 +109,14 @@ func openCommand() string {
 	return command
 }
 
+func browser() string {
+	if len(os.Getenv("BROWSER")) > 0 {
+		return os.Getenv("BROWSER")
+	}
+
+	return "google-chrome"
+}
+
 func run(args []string, outStream, errStream io.Writer) int {
 	var commit bool
 
@@ -147,7 +155,7 @@ func run(args []string, outStream, errStream io.Writer) int {
 	}
 
 	url = url + path
-	if err = exec.Command(openCommand(), url).Run(); err != nil {
+	if err = exec.Command(browser(), url).Run(); err != nil {
 		return msg(err, errStream)
 	}
 
